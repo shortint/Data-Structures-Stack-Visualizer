@@ -6,17 +6,14 @@ class StackVisualizer:
       def __init__(self, root):
           self.window = root
           self.window.config(bg="DodgerBlue2")
-
-          #Some list to store data
+            
           self.last_label_value_keep = []
           self.block_value_counter = []
 
-          #Canvas widget and coordinate of it in stack container make
           self.block_make = 0
           self.final_set_block = 0
           self.extra_decrease = 0
 
-          #Label,Button,Entry initialization
           self.heading_name = None
           self.sub_heading = None
           self.stack_indicator = None
@@ -39,7 +36,7 @@ class StackVisualizer:
           self.value_entry = IntVar()
           self.value_entry.set(" ")
 
-          #Default coordinate set
+
           self.canvas_width = 600
           self.canvas_height = 500
           self.number_set_x = 40
@@ -51,17 +48,15 @@ class StackVisualizer:
           self.down_achieve = 400
           self.top_y = 400
 
-          #Make canvas
           self.stack_canvas = Canvas(self.window, width=self.canvas_width, height=self.canvas_height,bg="DodgerBlue2", relief=RAISED, bd=10)
           self.stack_canvas.pack(fill=BOTH)
 
-          #Function call
           self.make_stack_container()
           self.make_buttons()
           self.heading_and_sub_heading()
           self.set_index()
 
-      def heading_and_sub_heading(self): #Main heading, sub heading and indicator label set
+      def heading_and_sub_heading(self): 
           self.heading_name = Label(self.stack_canvas, text="STACK VISUALIZER", bg="DodgerBlue2", fg="white", font=("Helvetica",30,"bold","italic"))
           self.heading_name.place(x=100,y=30)
 
@@ -71,7 +66,7 @@ class StackVisualizer:
           self.stack_indicator = Label(self.stack_canvas, text="STACK CONTAINER", bg="DodgerBlue2", fg="white",  font=("Helvetica",19,"bold","italic"))
           self.stack_indicator.place(x=150,y=450)
 
-      def make_buttons(self): #Make Buttons to access and make top with arrow
+      def make_buttons(self):
           self.push_btn = Button(self.window,text="PUSH",fg="Black",bg="white",font=("Arial",15,"bold"),
                                  relief=RAISED,bd=7,command=self.push_element)
           self.push_btn.place(x=30,y=535)
@@ -83,12 +78,12 @@ class StackVisualizer:
           self.top_index = Label(self.window, text="- TOP", fg="white", bg="DodgerBlue2", font=("Arial", 16, "bold"))
           self.top_index.place(x=310, y=self.top_y)
 
-      def make_stack_container(self): #Making of stack container
+      def make_stack_container(self): 
           self.stack_canvas.create_line(250,198,250,400,fill="white",width=4)
           self.stack_canvas.create_line(250,400,300,400,fill="white",width=4)
           self.stack_canvas.create_line(300, 198, 300, 400, fill="white", width=4)
 
-      def set_index(self): #Index of the stack set
+      def set_index(self): 
           self.index_neg = Label(self.stack_canvas,text="-1",fg="white",bg="DodgerBlue2",font=("Arial",15,"bold"))
           self.index_neg.place(x= 215, y=403)
 
@@ -110,15 +105,13 @@ class StackVisualizer:
           self.index_5 = Label(self.stack_canvas, text="5", fg="white", bg="DodgerBlue2", font=("Arial", 15, "bold"))
           self.index_5.place(x=222, y=199)
 
-      def push_element(self): #Push button action
+      def push_element(self): 
           if len(self.last_label_value_keep) == 6:
              messagebox.showerror("OVERFLOW","Seems like stack is full. You can use POP to remove an element")
           else:
-              # Access Button deactivation
               self.pop_btn.config(state=DISABLED)
               self.push_btn.config(state=DISABLED)
 
-              #Element value give diagram set
               self.element_take_label = Label(self.window,text="Enter the element : ",
                                          bg="DodgerBlue2",fg="white",font=("Arial",12,"bold"))
               self.element_take_label.place(x=170,y=536)
@@ -133,19 +126,16 @@ class StackVisualizer:
               self.add_btn.place(x=400, y=560)
               self.window.bind('<Return>',self.make_block)
 
-      def make_block(self,e):#Element containing block making
+      def make_block(self,e):
           try:
-              #Deactivation of input segment
               self.element_take_label.place_forget()
               self.element_take_entry.place_forget()
               self.add_btn.place_forget()
 
-              #Bloack making process
               self.block_make = self.stack_canvas.create_rectangle(self.block_left, self.block_up, self.block_right, self.block_down, fill="white", width=2, outline="DodgerBlue2")
               self.entry_number = Label(self.stack_canvas, textvar=self.number, bg="white", fg="DodgerBlue2", font=("Arial",11,"bold"))
               self.entry_number.place(x=self.number_set_x, y=self.number_set_y)
 
-              # only integer value allow set
               if type(self.value_entry.get()) == int:
                   self.number.set(self.value_entry.get())
 
@@ -162,13 +152,11 @@ class StackVisualizer:
 
       def push_data(self):#Element entry process in stack container
           try:
-              #Element coordinate set in stack container
               self.down_achieve -= 28 + self.extra_decrease
               self.top_y -= 35
               self.top_index.place_forget()
               self.top_index.place(x=310, y=self.top_y)
 
-              #movement controlling horizontal
               while self.number_set_x<265:
                   self.stack_canvas.delete(self.block_make)
                   self.entry_number.place_forget()
@@ -179,7 +167,6 @@ class StackVisualizer:
                   self.entry_number.place(x=self.number_set_x, y=self.number_set_y)
                   self.window.update()
 
-              #movement controlling vertical
               while self.number_set_y < self.down_achieve:
                   self.stack_canvas.delete(self.block_make)
                   self.entry_number.place_forget()
@@ -196,20 +183,16 @@ class StackVisualizer:
           except:
               pass
 
-      def reset_with_position_set(self): #Reset the coordinate value
-          #Number block value set another Label to store it
+      def reset_with_position_set(self):
           self.final_set_block = Label(self.window, text=self.value_entry.get(), bg="white", fg="DodgerBlue2",font=("Arial",11,"bold"))
           self.final_set_block.place(x=self.number_set_x, y=self.number_set_y)
 
-          #Storing of label,widget for future reference
           self.last_label_value_keep.append(self.final_set_block)
           self.block_value_counter.append(self.block_make)
 
-          #Reset
           self.value_entry.set(" ")
           self.entry_number.place_forget()
 
-          #Access Button activation
           self.push_btn.config(state=NORMAL)
           self.pop_btn.config(state=NORMAL)
 
@@ -223,7 +206,7 @@ class StackVisualizer:
           self.extra_decrease =6
 
 
-      def pop_data(self): #Data containing block get out from stack container
+      def pop_data(self):
           if len(self.last_label_value_keep) ==0: #Stack container empty checking
               messagebox.showerror("UNDERFLOW","Seems like stack is empty. You can use PUSH to add an element")
           else:
